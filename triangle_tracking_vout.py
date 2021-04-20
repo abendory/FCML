@@ -21,11 +21,14 @@ def generate_sample_signal(delta, t):
 
 	iterations = int(len(t) / len(levels))
 	for j in range(iterations):
-		print('{}'.format(j))
+		# print('{}'.format(j))
 		for level in levels:
 			signal = np.append(signal, level*np.ones(pts_per_delta))
 
 	print(len(signal))
+	d={'sig': signal}
+	df = pd.DataFrame(data=d)
+	df.to_csv('sample_{}.csv'.format(delta))
 	return signal
 	
 # From https://stackoverflow.com/questions/2566412/find-nearest-value-in-numpy-array
@@ -77,10 +80,15 @@ def plot_vout(df, coupling, delta, ax):
 	# ax[col].plot(t, vout_r)
 	# sample_signal = generate_sample_signal(delta, t)
 
+	# low = np.min(len(sample_signal), len(t))
+	# low = np.min(min, len(vout))
+
 	# Vout
 	ax[col].grid('on')
 	ax[col].plot(t, vout)
-	# ax[col].plot(t, sample_signal)
+	# ax[col].plot(t[:low], vout[:low])
+	# ax[col].plot(t[:low], sample_signal[:low])
+	# ax[col].legend(['Vout', 'Target'])
 	# ax[col].set_title('Vout, delta = {} uS'.format(delta))
 	if col == 0:
 		ax[col].set_ylabel('Delta = {} uS\n\nVoltage (V)'.format(2*delta))
